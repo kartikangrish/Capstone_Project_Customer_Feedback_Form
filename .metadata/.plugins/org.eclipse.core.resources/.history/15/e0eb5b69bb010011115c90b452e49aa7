@@ -1,0 +1,17 @@
+package com.example.customerfeedbacksystem.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.example.customerfeedbacksystem.entity.Feedback;
+import com.example.customerfeedbacksystem.repository.FeedbackRepository;
+
+@Service
+public class FeedbackService {
+
+    @Autowired
+    private FeedbackRepository feedbackRepository;
+
+    public Feedback saveFeedback(Feedback feedback) {
+        return feedbackRepository.save(feedback);
+    }
+}

@@ -1,0 +1,5 @@
+package com.example.customerfeedbacksystem.service;
+
+public class FeedbackServiceImpl {
+
+}

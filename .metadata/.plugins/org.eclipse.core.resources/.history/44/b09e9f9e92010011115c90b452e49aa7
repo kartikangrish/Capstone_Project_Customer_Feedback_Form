@@ -1,0 +1,5 @@
+package com.example.customerfeedbacksystem.repository;
+
+public interface FeedbackRepository {
+
+}

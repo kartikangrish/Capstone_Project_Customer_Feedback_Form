@@ -14,25 +14,23 @@ import { AuthService } from '../../services/auth.service';
     input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
     button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
     button:hover { background: #0056b3; }
-    .hint { font-size: 0.8em; color: #666; margin-top: 10px; text-align: center; }
   `]
 })
 export class LoginComponent {
   username = '';
-  password = ''; // We won't validate password in this mock version
+  password = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin() {
-    const success = this.authService.login(this.username);
-    if (success) {
-      if (this.authService.isAdmin()) {
-        this.router.navigate(['/dashboard']);
-      } else {
-        this.router.navigate(['/submit']);
-      }
+    if (this.username === 'admin' && this.password === 'admin') {
+      this.authService.login(this.username);
+      this.router.navigate(['/dashboard']);
+    } else if (this.username === 'user' && this.password === 'user') {
+      this.authService.login(this.username);
+      this.router.navigate(['/submit']);
     } else {
-      alert('Invalid username! Try "admin" or "user".');
+      alert('Invalid Credentials! Please try again.');
     }
   }
 }

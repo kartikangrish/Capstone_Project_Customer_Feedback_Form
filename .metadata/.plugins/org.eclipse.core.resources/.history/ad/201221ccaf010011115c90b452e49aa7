@@ -1,0 +1,39 @@
+package com.example.customerfeedbacksystem.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.customerfeedbacksystem.entity.Feedback;
+import com.example.customerfeedbacksystem.service.FeedbackService;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/api/feedback")
+@CrossOrigin(origins = "http://localhost:4200")
+public class FeedbackController {
+
+    @Autowired
+    private FeedbackService feedbackService;
+
+    // POST: Submit feedback
+    @PostMapping
+    public Feedback submitFeedback(@Valid @RequestBody Feedback feedback) {
+        return feedbackService.saveFeedback(feedback);
+    }
+
+    // GET: View all feedback
+    @GetMapping
+    public List<Feedback> getAllFeedback() {
+        return feedbackService.getAllFeedback();
+    }
+
+    // GET: Filter feedback by rating
+    @GetMapping("/rating/{rating}")
+    public List<Feedback> getFeedbackByRating(@PathVariable int rating) {
+        return feedbackService.getFeedbackByRating(rating);
+    }
+}
+

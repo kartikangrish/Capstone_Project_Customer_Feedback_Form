@@ -1,19 +1,51 @@
-
-
 services:
-  # Backend Service
+  # 1. MySQL Database Service
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqldb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: feedback_db
+    ports:
+      # Maps localhost:3307 -> Container:3306
+      # We use 3307 to avoid conflicts if you have MySQL installed locally
+      - "3307:3306"
+    networks:
+      - feedback-net
+    # Healthcheck ensures MySQL is actually ready before backend tries to connect
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # 2. Backend Service
   backend:
     build: ./feedback-backend
     ports:
       - "8080:8080"
+    depends_on:
+      mysqldb:
+        condition: service_healthy
     networks:
       - feedback-net
+    environment:
+      # Connection Details
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/feedback_db?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      
+      # FORCE MySQL Driver (This fixes the "Driver org.h2.Driver" error)
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+      
+      # FORCE MySQL Dialect
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.MySQLDialect
 
-  # Frontend Service
+  # 3. Frontend Service
   frontend:
     build: ./feedback-frontend
     ports:
-      - "4200:80" # Maps local port 4200 to container port 80
+      - "4200:80"
     depends_on:
       - backend
     networks:
