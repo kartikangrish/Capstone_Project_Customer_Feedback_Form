@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FeedbackService } from '../../services/feedback';
 import { Feedback } from '../../models/feedback.models';
+import { FeedbackService } from '../../services/feedback';
 
 @Component({
   selector: 'app-feedback-form',
@@ -20,9 +20,17 @@ import { Feedback } from '../../models/feedback.models';
   `]
 })
 export class FeedbackFormComponent {
+  // Initialize with nested objects to match your updated Model and Java Backend
   feedback: Feedback = {
-    customerName: '',
-    productName: '',
+    customer: {
+      email: '',
+      firstName: '',
+      lastName: ''
+    },
+    product: {
+      name: '',
+      category: 'General'
+    },
     rating: 5,
     comment: ''
   };
@@ -37,7 +45,7 @@ export class FeedbackFormComponent {
       },
       error: (err) => {
         console.error(err);
-        alert('Error submitting feedback (Is the backend running?)');
+        alert('Error submitting feedback. Check if Backend and Database are connected.');
       }
     });
   }

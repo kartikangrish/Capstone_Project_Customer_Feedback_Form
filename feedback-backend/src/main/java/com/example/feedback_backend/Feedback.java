@@ -1,11 +1,14 @@
 package com.example.feedback_backend;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "feedback")
@@ -15,40 +18,73 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String customerName;
-    private String productName;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
     private Integer rating;
     private String comment;
-    
-    // Automatically set the date when created
     private LocalDateTime submittedAt = LocalDateTime.now();
 
-    // Constructors
-    public Feedback() {}
+    public Feedback() {
+    }
 
-    public Feedback(String customerName, String productName, Integer rating, String comment) {
-        this.customerName = customerName;
-        this.productName = productName;
+    public Feedback(Customer customer, Product product, Integer rating, String comment) {
+        this.customer = customer;
+        this.product = product;
         this.rating = rating;
         this.comment = comment;
     }
 
-    // Getters and Setters (Standard Java)
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getCustomerName() { return customerName; }
-    public void setCustomerName(String customerName) { this.customerName = customerName; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getProductName() { return productName; }
-    public void setProductName(String productName) { this.productName = productName; }
+    public Customer getCustomer() {
+        return customer;
+    }
 
-    public Integer getRating() { return rating; }
-    public void setRating(Integer rating) { this.rating = rating; }
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
-    public String getComment() { return comment; }
-    public void setComment(String comment) { this.comment = comment; }
+    public Product getProduct() {
+        return product;
+    }
 
-    public LocalDateTime getSubmittedAt() { return submittedAt; }
-    public void setSubmittedAt(LocalDateTime submittedAt) { this.submittedAt = submittedAt; }
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public LocalDateTime getSubmittedAt() {
+        return submittedAt;
+    }
+
+    public void setSubmittedAt(LocalDateTime submittedAt) {
+        this.submittedAt = submittedAt;
+    }
 }
