@@ -2,13 +2,20 @@
   <h2>Submit Feedback</h2>
   <form (ngSubmit)="onSubmit()" #form="ngForm">
     <div class="form-group">
-      <label>Customer Name</label>
-      <input type="text" [(ngModel)]="feedback.customerName" name="customerName" required>
+      <label>First Name</label>
+      <input type="text" [(ngModel)]="feedback.customer.firstName" name="firstName" required />
     </div>
+
+    <div class="form-group">
+      <label>Email (Required for identification)</label>
+      <input type="email" [(ngModel)]="feedback.customer.email" name="email" required />
+    </div>
+
     <div class="form-group">
       <label>Product Name</label>
-      <input type="text" [(ngModel)]="feedback.productName" name="productName" required>
+      <input type="text" [(ngModel)]="feedback.product.name" name="productName" required />
     </div>
+
     <div class="form-group">
       <label>Rating</label>
       <select [(ngModel)]="feedback.rating" name="rating">
@@ -19,10 +26,12 @@
         <option [value]="1">1 - Terrible</option>
       </select>
     </div>
+
     <div class="form-group">
       <label>Comment</label>
       <textarea [(ngModel)]="feedback.comment" name="comment" rows="4" required></textarea>
     </div>
+
     <button type="submit" [disabled]="!form.valid">Submit</button>
   </form>
 </div>
