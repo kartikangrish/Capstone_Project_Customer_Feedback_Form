@@ -1,18 +1,14 @@
-# Angular
+# Dependency directories
 node_modules/
 dist/
-.angular/
-
-# Java / Spring Boot
 target/
-*.class
-.mvn/wrapper/maven-wrapper.jar
+.mvn/
 
-# IDEs
+# IDE and OS files
 .vscode/
 .idea/
-*.iml
-
-# OS
 .DS_Store
-Thumbs.db
+*.swp
+
+# Docker
+.docker/

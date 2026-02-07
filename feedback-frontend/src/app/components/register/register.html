@@ -1,0 +1,73 @@
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-5">
+          <div class="text-center mb-4">
+            <div class="bg-primary bg-opacity-10 d-inline-block p-3 rounded-circle mb-3">
+              <i class="bi bi-person-plus text-primary fs-1"></i>
+            </div>
+            <h2 class="fw-bold text-navy">Create Account</h2>
+            <p class="text-muted">Join the Feedback System today</p>
+          </div>
+
+          <form #registerForm="ngForm" (ngSubmit)="onRegister()" novalidate>
+            
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Full Name</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control bg-light border-start-0" 
+                       name="fullName" [(ngModel)]="user.fullName" 
+                       #name="ngModel" required placeholder="Enter your name">
+              </div>
+              <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger small mt-1">
+                <i class="bi bi-exclamation-circle me-1"></i>Name is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Email Address</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope"></i></span>
+                <input type="email" class="form-control bg-light border-start-0" 
+                       name="email" [(ngModel)]="user.email" 
+                       #email="ngModel" required email placeholder="email@example.com">
+              </div>
+              <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger small mt-1">
+                <i class="bi bi-exclamation-circle me-1"></i>Please enter a valid email address.
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Password</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock"></i></span>
+                <input type="password" class="form-control bg-light border-start-0" 
+                       name="password" [(ngModel)]="user.password" 
+                       #pwd="ngModel" required minlength="6" placeholder="Min. 6 characters">
+              </div>
+              <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger small mt-1">
+                <div *ngIf="pwd.errors?.['required']">
+                  <i class="bi bi-exclamation-circle me-1"></i>Password is required.
+                </div>
+                <div *ngIf="pwd.errors?.['minlength']">
+                  <i class="bi bi-exclamation-circle me-1"></i>Must be at least 6 characters.
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" [disabled]="!registerForm.valid" class="btn btn-primary w-100 py-2 fw-bold mb-3 shadow-sm">
+              Register Now
+            </button>
+
+            <div class="text-center">
+              <span class="text-muted">Already have an account? </span>
+              <a routerLink="/login" class="text-decoration-none fw-bold" style="color: #16a085;">Login here</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,37 +1,74 @@
-<div class="container">
-  <h2>Submit Feedback</h2>
-  <form (ngSubmit)="onSubmit()" #form="ngForm">
-    <div class="form-group">
-      <label>First Name</label>
-      <input type="text" [(ngModel)]="feedback.customer.firstName" name="firstName" required />
-    </div>
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        
+        <div class="card-header border-0 p-4 text-center text-white" style="background: linear-gradient(135deg, #1a3c5e 0%, #2c537a 100%);">
+          <i class="bi bi-patch-check-fill fs-1 text-warning mb-2"></i>
+          <h2 class="fw-bold mb-0">Service Excellence Survey</h2>
+          <p class="mb-0 opacity-75">Your insights help us navigate towards better quality</p>
+        </div>
 
-    <div class="form-group">
-      <label>Email (Required for identification)</label>
-      <input type="email" [(ngModel)]="feedback.customer.email" name="email" required />
-    </div>
+        <div class="card-body p-5 bg-white">
+          <form (ngSubmit)="onSubmit()" #form="ngForm" novalidate>
+            
+            <h5 class="text-navy fw-bold mb-3 border-bottom pb-2">
+              <i class="bi bi-person-badge me-2"></i>Customer Information
+            </h5>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-uppercase text-muted">First Name</label>
+                <input type="text" class="form-control form-control-lg bg-light border-0" 
+                       [(ngModel)]="feedback.customer.firstName" name="firstName" required placeholder="Enter name">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-uppercase text-muted">Email Address</label>
+                <input type="email" class="form-control form-control-lg bg-light border-0" 
+                       [(ngModel)]="feedback.customer.email" name="email" required email placeholder="email@maritime.com">
+              </div>
+            </div>
 
-    <div class="form-group">
-      <label>Product Name</label>
-      <input type="text" [(ngModel)]="feedback.product.name" name="productName" required />
-    </div>
+            <h5 class="text-navy fw-bold mb-3 border-bottom pb-2">
+              <i class="bi bi-ship me-2"></i>Product Experience
+            </h5>
+            <div class="mb-4">
+              <label class="form-label small fw-bold text-uppercase text-muted">Select Product/Service</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-0"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control form-control-lg bg-light border-0" 
+                       [(ngModel)]="feedback.product.name" name="productName" required placeholder="e.g., Radar System X1">
+              </div>
+            </div>
 
-    <div class="form-group">
-      <label>Rating</label>
-      <select [(ngModel)]="feedback.rating" name="rating">
-        <option [value]="5">5 - Excellent</option>
-        <option [value]="4">4 - Good</option>
-        <option [value]="3">3 - Average</option>
-        <option [value]="2">2 - Poor</option>
-        <option [value]="1">1 - Terrible</option>
-      </select>
-    </div>
+            <div class="mb-4 text-center py-3 rounded-3 bg-light">
+              <label class="form-label d-block fw-bold mb-3">Overall Satisfaction</label>
+              <div class="star-rating fs-2">
+                <i *ngFor="let star of [1,2,3,4,5]" 
+                   class="bi pe-2 cursor-pointer" 
+                   [ngClass]="feedback.rating >= star ? 'bi-star-fill text-warning' : 'bi-star text-secondary'"
+                   (click)="feedback.rating = star"></i>
+              </div>
+              <p class="small text-muted mt-2">Currently selected: <strong>{{feedback.rating}} Stars</strong></p>
+            </div>
 
-    <div class="form-group">
-      <label>Comment</label>
-      <textarea [(ngModel)]="feedback.comment" name="comment" rows="4" required></textarea>
-    </div>
+            <div class="mb-4">
+              <label class="form-label small fw-bold text-uppercase text-muted">Detailed Feedback</label>
+              <textarea class="form-control border-0 bg-light" 
+                        [(ngModel)]="feedback.comment" name="comment" rows="5" required 
+                        placeholder="Please share your detailed experience with us..."></textarea>
+            </div>
 
-    <button type="submit" [disabled]="!form.valid">Submit</button>
-  </form>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-lg text-white shadow-sm py-3 fw-bold" 
+                      [disabled]="!form.valid || isSubmitting"
+                      style="background-color: #16a085; transition: 0.3s;">
+                <span *ngIf="!isSubmitting"><i class="bi bi-send-fill me-2"></i>Submit My Feedback</span>
+                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
