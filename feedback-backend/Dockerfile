@@ -1,15 +1,12 @@
-# Use an official OpenJDK runtime as a parent image
-FROM eclipse-temurin:17-jdk-alpine
-
-# Set the working directory inside the container
+# Stage 1: Build the JAR
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy the build file (target/feedback-backend-0.0.1-SNAPSHOT.jar) to the container
-# Note: We assume you run 'mvn clean package' before building this image
-COPY target/*.jar app.jar
-
-# Expose port 8080
+# Stage 2: Run the Application
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Run the jar file
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -1,1 +1,52 @@
-<router-outlet></router-outlet>
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm mb-4" style="background-color: #1a3c5e;">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <i class="bi bi-anchor-fill me-2"></i> 
+      <span>Feedback System</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/feedback-form" routerLinkActive="active">
+            <i class="bi bi-pencil-square me-1"></i> Submit Feedback
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+            <i class="bi bi-graph-up-arrow me-1"></i> Dashboard
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="btn btn-outline-light me-2" routerLink="/login">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Login
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-warning text-dark fw-bold" routerLink="/register">
+            <i class="bi bi-person-plus-fill me-1"></i> Register
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</main>
+
+<footer class="text-center py-4 mt-5 text-muted border-top">
+  <p>&copy; 2026 Customer Feedback System | Built with Angular & Spring Boot</p>
+</footer>

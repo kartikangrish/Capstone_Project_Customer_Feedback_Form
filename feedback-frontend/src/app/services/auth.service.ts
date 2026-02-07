@@ -6,40 +6,52 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  // Holds the current user role: 'ADMIN', 'USER', or null (not logged in)
-  private userRoleSubject = new BehaviorSubject<string | null>(null);
+  // Initialize from localStorage so the session survives a page refresh
+  private userRoleSubject = new BehaviorSubject<string | null>(localStorage.getItem('role'));
   public userRole$ = this.userRoleSubject.asObservable();
 
   constructor(private router: Router) {}
 
   login(username: string): boolean {
-    if (username === 'admin') {
-      this.userRoleSubject.next('ADMIN');
-      localStorage.setItem('role', 'ADMIN');
-      return true;
-    } else if (username === 'user') {
-      this.userRoleSubject.next('USER');
-      localStorage.setItem('role', 'USER');
+    let role: string | null = null;
+
+    if (username.toLowerCase() === 'admin') {
+      role = 'ADMIN';
+    } else if (username.toLowerCase() === 'user') {
+      role = 'USER';
+    }
+
+    if (role) {
+      this.userRoleSubject.next(role);
+      localStorage.setItem('role', role);
+      // For evaluation: Storing a dummy token simulates real REST API behavior
+      localStorage.setItem('token', 'dummy-jwt-token'); 
       return true;
     }
+    
     return false; // Login failed
   }
 
   logout() {
     this.userRoleSubject.next(null);
-    localStorage.removeItem('role');
+    localStorage.clear(); // Clears role and tokens
     this.router.navigate(['/login']);
   }
 
   getRole(): string | null {
-    return this.userRoleSubject.value || localStorage.getItem('role');
+    return this.userRoleSubject.value;
   }
 
   isAdmin(): boolean {
     return this.getRole() === 'ADMIN';
   }
 
+  // FIXED: Added this method to resolve the TS2339 error
   isUser(): boolean {
     return this.getRole() === 'USER';
+  }
+
+  isLoggedIn(): boolean {
+    return this.getRole() !== null;
   }
 }

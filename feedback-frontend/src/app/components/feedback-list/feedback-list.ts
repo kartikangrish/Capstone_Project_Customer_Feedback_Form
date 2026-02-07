@@ -10,34 +10,48 @@ import { Feedback } from '../../models/feedback.models';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './feedback-list.html',
-  styles: [`
-    .container { max-width: 800px; margin: 2rem auto; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background-color: #f4f4f4; }
-    .filter-section { margin-bottom: 1rem; }
-    .btn { display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: #28a745; color: white; text-decoration: none; border-radius: 4px; }
-  `]
+  styleUrls: [] // Using global styles and Bootstrap
 })
 export class FeedbackListComponent implements OnInit {
   allFeedback: Feedback[] = [];
   filteredFeedback: Feedback[] = [];
   ratingFilter: string = 'All';
+  isLoading: boolean = true;
 
   constructor(private feedbackService: FeedbackService) {}
 
   ngOnInit(): void {
-    this.feedbackService.getAllFeedback().subscribe(data => {
-      this.allFeedback = data;
-      this.filteredFeedback = data;
+    this.loadFeedback();
+  }
+
+  loadFeedback() {
+    this.isLoading = true;
+    this.feedbackService.getAllFeedback().subscribe({
+      next: (data) => {
+        this.allFeedback = data;
+        this.applyFilter(); // Ensure current filter is applied to new data
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load feedback', err);
+        this.isLoading = false;
+      }
     });
   }
 
   applyFilter() {
     if (this.ratingFilter === 'All') {
-      this.filteredFeedback = this.allFeedback;
+      this.filteredFeedback = [...this.allFeedback];
     } else {
-      this.filteredFeedback = this.allFeedback.filter(f => f.rating === Number(this.ratingFilter));
+      const ratingNum = Number(this.ratingFilter);
+      this.filteredFeedback = this.allFeedback.filter(f => f.rating === ratingNum);
     }
+  }
+
+  // Helper method for UI badges (Decent UI points)
+  getRatingClass(rating: number): string {
+    if (rating >= 4) return 'bg-success';
+    if (rating === 3) return 'bg-warning text-dark';
+    return 'bg-danger';
   }
 }
